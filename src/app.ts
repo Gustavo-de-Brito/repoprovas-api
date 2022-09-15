@@ -1,14 +1,12 @@
 import express, { json } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import authRouter from './routes/authRouter';
 
 const app = express();
 
 app.use(cors());
 app.use(json());
 
-app.get('/', (req, res) => res.status(200).send('servidor no ar'));
+app.use(authRouter);
 
-app.listen(process.env.PORT);
+export default app;
