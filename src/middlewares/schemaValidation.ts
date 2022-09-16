@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ObjectSchema } from 'joi';
+import { unprocessableError } from '../utils/errorUtils';
 
 function schemaValidation(schema: ObjectSchema) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -9,8 +10,7 @@ function schemaValidation(schema: ObjectSchema) {
 
     if(error) {
       const errors: string[] = error.details.map(err => err.message);
-
-      return res.status(422).send(errors);
+      throw unprocessableError(errors);
     }
 
     next();
