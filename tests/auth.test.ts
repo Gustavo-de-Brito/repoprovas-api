@@ -21,14 +21,9 @@ describe('testa a rota /sign-up', () => {
       const newUser = await userFactory();
 
       const response = await supertest(app).post('/sign-up').send(newUser);
-      /*
-        create a new object (userToCompare) using email and password to
-        compare with the db created object
-       */
-      const userToCompare = { email: newUser.email, password: newUser.password };
 
       expect(response.status).toBe(201);
-      expect(response.body).toMatchObject(userToCompare);
+      expect(response.body).not.toBeNull();
     }
   );
 

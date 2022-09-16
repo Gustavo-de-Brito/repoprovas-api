@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import * as authRepository from '../repositories/authRepository';
 import { IUserData } from '../types/userTypes';
 import { User } from '@prisma/client';
@@ -13,8 +14,12 @@ async function isEmailRegistered(email: string) {
 
 export async function createUser(user: IUserData) {
   await isEmailRegistered(user.email);
+  const SALT = 10;
 
-  const newUser: User = await authRepository.insert(user);
+  const encryptedPassword: string = bcrypt.hashSync(user.password, SALT);
+  const newUser: IUserData = {...user, password: encryptedPassword };
 
-  return newUser;
+  const createdUser: User = await authRepository.insert(newUser);
+
+  return createdUser;
 }
