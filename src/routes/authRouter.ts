@@ -1,10 +1,12 @@
 import { Router } from 'express';
-import authSchema from '../schemas/authSchema';
+import registerSchema from '../schemas/registerSchema';
+import loginSchema from '../schemas/loginSchema';
 import schemaValidation from '../middlewares/schemaValidation';
-import { registerUser } from '../controllers/authControllers';
+import { registerUser, loginUser } from '../controllers/authControllers';
 
 const authRouter: Router = Router();
 
-authRouter.post('/sign-up', schemaValidation(authSchema), registerUser);
+authRouter.post('/sign-up', schemaValidation(registerSchema), registerUser);
+authRouter.post('/sign-in', schemaValidation(loginSchema), loginUser)
 
 export default authRouter;

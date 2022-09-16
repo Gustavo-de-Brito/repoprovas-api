@@ -11,3 +11,9 @@ export async function registerUser(req: Request, res: Response) {
 
   res.status(201).send(createdUser);
 }
+
+export async function loginUser(req: Request, res: Response) {
+  const user: IUserData = req.body;
+
+  res.sendStatus(503);
+}

@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-const authSchema = joi.object(
+const registerSchema = joi.object(
   {
     email: joi.string().email().required(),
     password: joi.string().required(),
@@ -8,4 +8,4 @@ const authSchema = joi.object(
   }
 );
 
-export default authSchema;
+export default registerSchema;
