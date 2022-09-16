@@ -10,7 +10,7 @@ function handlerErrorsMiddleware(
   if( isCustomError(err) ) {
     const statusCode = getErrorStatusCode((err as ICustomError).type);
 
-    res.status(statusCode).send(err.message);
+    return res.status(statusCode).send(err.message);
   }
 
   res.sendStatus(500);
