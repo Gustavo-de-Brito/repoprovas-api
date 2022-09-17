@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker';
 
-export default async function userFactory() {
+async function userFactory()
+: Promise<{
+  email: string,
+  password: string,
+  confirmPassword: string}> 
+{
   const password: string = faker.internet.password();
 
   return {
@@ -9,3 +14,5 @@ export default async function userFactory() {
     confirmPassword: password
   };
 }
+
+export default userFactory;

@@ -6,6 +6,8 @@ import { IUserData } from '../types/userTypes';
 import { User } from '@prisma/client';
 import { conflictError, unauthorizedError } from '../utils/errorUtils';
 
+dotenv.config();
+
 async function isEmailConflicting(email: string) {
   const user: User | null = await authRepository.getUserByEmail(email);
 
