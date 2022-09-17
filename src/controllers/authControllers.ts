@@ -11,3 +11,11 @@ export async function registerUser(req: Request, res: Response) {
 
   res.status(201).send(createdUser);
 }
+
+export async function loginUser(req: Request, res: Response) {
+  const user: IUserData = req.body;
+
+  const token: string = await authService.loginUser(user);
+
+  res.status(200).send({ token });
+}
