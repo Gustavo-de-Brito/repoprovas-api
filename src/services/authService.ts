@@ -57,3 +57,9 @@ export async function loginUser(user:IUserData): Promise<string> {
 
   return token;
 }
+
+export async function getUSerById(userId: number) {
+  const user: User | null = await authRepository.getUserById(userId);
+
+  return user;
+}
