@@ -1,5 +1,5 @@
 import { Category, Discipline, Teacher, TeachersDisciplines, Test } from "@prisma/client";
-import { ITestByDiscipline, ITestData, TestDataIds } from "../types/testTypes";
+import { ITestByDiscipline, ITestByTeacher, ITestData, TestDataIds } from "../types/testTypes";
 import * as testRepository from '../repositories/testRepository';
 import { notFoundError } from "../utils/errorUtils";
 
@@ -54,6 +54,7 @@ export async function addTest(test: ITestData): Promise<Test> {
   const categoryData: Category = await isCategoryValid(test.category)
   const disciplineData: Discipline = await isDisciplineValid(test.discipline);
   const teacherData: Teacher = await isTeacherValid(test.teacher);
+
   const teacherDisciplineData: TeachersDisciplines = (
     await isTeacherDisciplineValid(teacherData.id, disciplineData.id)
   );
@@ -106,4 +107,38 @@ export async function getTestsDiscipline() {
   }
 
   return formatedDisciplines;
+}
+
+export async function getTestsTeacher() {
+  const tests = await testRepository.getTestsGroupByTeacher();
+  const formatedTestsTeacher: ITestByTeacher[] = { ...tests };
+
+  for(let i = 0; i < tests.length; i++) {
+    const teachersDisciplines = tests[i].TeachersDisciplines;
+    
+    for(let j = 0; j < teachersDisciplines.length; j++) {
+      const emptyTest = teachersDisciplines[j].Test;
+      const testsByCategory = [];
+
+        for(let k = 0; k < emptyTest.length; k++) {
+          testsByCategory.push({
+            name: emptyTest[k].categories.name,
+            tests: emptyTest[k].categories.Test.map(test => {
+              const formatedTest = {
+                name: test.name,
+                pdfUrl: test.pdfUrl,
+                discipline: test.teachersDisciplines.disciplines.name
+              };
+
+              return formatedTest;
+            })
+          });
+      }
+
+      delete formatedTestsTeacher[i].TeachersDisciplines
+      formatedTestsTeacher[i].categories = testsByCategory;
+    }
+  }
+
+  return tests;
 }
