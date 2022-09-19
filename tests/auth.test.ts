@@ -11,14 +11,13 @@ describe('testa a rota /sign-up', () => {
     expect(response.status).toBe(422);
   });
 
-  it('criar um usuário com sucesso deve retornar 201 e o objeto criado',
+  it('criar um usuário com sucesso deve retornar 201',
     async () => {
       const newUser = await userFactory();
 
       const response = await supertest(app).post('/sign-up').send(newUser);
 
       expect(response.status).toBe(201);
-      expect(response.body).not.toBeNull();
     }
   );
 

@@ -18,6 +18,6 @@ export async function getUserById(userId: number): Promise<User | null> {
   return user;
 }
 
-export async function insert(user: IUserData): Promise<User>{
-  return await prisma.user.create({ data: user });
+export async function insert(user: IUserData) {
+  await prisma.user.create({ data: user });
 }

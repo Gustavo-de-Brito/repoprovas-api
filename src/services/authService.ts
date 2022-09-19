@@ -23,9 +23,7 @@ export async function createUser(user: IUserData) {
   const encryptedPassword: string = bcrypt.hashSync(user.password, SALT);
   const newUser: IUserData = {...user, password: encryptedPassword };
 
-  const createdUser: User = await authRepository.insert(newUser);
-
-  return createdUser;
+  await authRepository.insert(newUser);
 }
 
 async function isEmailRegistered(email: string) {
