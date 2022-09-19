@@ -60,3 +60,49 @@ export async function insert(test: TestDataIds): Promise<Test> {
 
   return newTest;
 }
+
+export async function getTestGroupByDiscipline() {
+  const tests = await prisma.term.findMany(
+    {
+      select: {
+        number: true,
+        Discipline: {
+          select: {
+            name: true,
+            TeachersDisciplines: {
+              select: {
+                Test: {
+                  select: {
+                    categories: {
+                      select: {
+                        name: true,
+                        Test: {
+                          select: {
+                            name: true,
+                            pdfUrl: true,
+                            teachersDisciplines: {
+                              select: {
+                                teachers: {
+                                  select: {
+                                    name: true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  distinct: ['categoryId']
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  );
+
+  return tests;
+}

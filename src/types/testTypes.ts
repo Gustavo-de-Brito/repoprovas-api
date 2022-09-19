@@ -8,4 +8,13 @@ export interface ITestData {
   category: string;
   discipline: string;
   teacher: string;
-}
+};
+
+export interface ITestByDiscipline {
+  number: number,
+  Discipline: {
+    name: string,
+    TeachersDisciplines?: any,
+    categories?: any
+  }[]
+};
