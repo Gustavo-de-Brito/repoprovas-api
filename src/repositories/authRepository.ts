@@ -8,6 +8,16 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   return user;
 }
 
+export async function getUserById(userId: number): Promise<User | null> {
+  const user: User | null = await prisma.user.findFirst(
+    {
+      where: { id: userId }
+    }
+  );
+
+  return user;
+}
+
 export async function insert(user: IUserData): Promise<User>{
   return await prisma.user.create({ data: user });
 }

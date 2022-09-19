@@ -1,11 +1,6 @@
 import app from '../src/app';
 import supertest from 'supertest';
 import userFactory from './factories/userFactory';
-import prisma from '../src/databases/postgres';
-
-beforeEach(() => {
-  prisma.$executeRaw`TRUNCATE TABLE users;`;
-});
 
 describe('testa a rota /sign-up', () => {
   it('testa se o body for vazio deve retornar 422', async () => {
@@ -100,8 +95,4 @@ describe('testa a rota /sign-in', () => {
     expect(loginResponse.status).toBe(200);
     expect(loginResponse.body.token).not.toBeUndefined(); 
   });
-});
-
-afterAll(() => {
-  prisma.$disconnect();
 });
