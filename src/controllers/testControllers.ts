@@ -10,3 +10,9 @@ export async function registerTest(req: Request, res: Response) {
 
   res.status(201).send(registeredTest);
 }
+
+export async function getTestGroupByDiscipline(req: Request, res: Response) {
+  const tests = await testService.getTestsDiscipline();
+
+  res.status(200).send(tests);
+}
