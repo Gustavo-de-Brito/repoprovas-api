@@ -85,15 +85,18 @@ export async function getTestsDiscipline() {
         const emptyTest = teachersDisciplines[k].Test;
 
         for(let l = 0; l < emptyTest.length; l++) {
-          testsByCategory.push(emptyTest[l].categories.Test.map(test => {
-            const formatedTest = {
-              name: test.name,
-              pdfUrl: test.pdfUrl,
-              teacher: test.teachersDisciplines.teachers.name
-            };
+          testsByCategory.push({
+            name: emptyTest[l].categories.name,
+            tests: emptyTest[l].categories.Test.map(test => {
+              const formatedTest = {
+                name: test.name,
+                pdfUrl: test.pdfUrl,
+                teacher: test.teachersDisciplines.teachers.name
+              };
 
-            return formatedTest;
-          }));
+              return formatedTest;
+            })
+          });
         }
       }
 
