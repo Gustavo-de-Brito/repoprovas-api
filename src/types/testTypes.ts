@@ -18,3 +18,9 @@ export interface ITestByDiscipline {
     categories?: any
   }[]
 };
+
+export interface ITestByTeacher {
+  name: string;
+  TeachersDisciplines?: any;
+  categories?: any;
+};

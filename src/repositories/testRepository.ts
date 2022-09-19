@@ -106,3 +106,44 @@ export async function getTestGroupByDiscipline() {
 
   return tests;
 }
+
+export async function getTestsGroupByTeacher() {
+  const tests = await prisma.teacher.findMany(
+    {
+      select: {
+        name: true,
+        TeachersDisciplines: {
+          select: {
+            Test: {
+              select: {
+                categories: {
+                  select: {
+                    name: true,
+                    Test: {
+                      select: {
+                        name: true,
+                        pdfUrl: true,
+                        teachersDisciplines: {
+                          select: {
+                            disciplines: {
+                              select: {
+                                name: true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              distinct: ['categoryId']
+            }
+          }
+        }
+      }
+    }
+  );
+
+  return tests;
+}
