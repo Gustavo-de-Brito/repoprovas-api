@@ -219,3 +219,42 @@ describe('testa o GET da rota /tests-discipline', () => {
     }
   );
 });
+
+describe('testa o GET da rota /tests-teacher', () => {
+  it('deve retornar 401 quando o token enviado é inválido', async () => {
+    const registerUser = await userFactory();
+    const loginUser = {
+      email: registerUser.email,
+      password: registerUser.password
+    };
+
+    const registerResponse = await supertest(app).post('/sign-up').send(registerUser);
+    const loginResponse = await supertest(app).post('/sign-in').send(loginUser);
+
+    const testsTeacher = await supertest(app).get('/tests-teacher').set('Authorization', 'Bearer a-wrong-token');
+
+    expect(registerResponse.status).toBe(201);
+    expect(loginResponse.status).toBe(200);
+
+    expect(testsTeacher.status).toBe(401);
+  });
+
+  it('deve retornar 200 e uma lista com objetos no formato certo', async () => {
+    const registerUser = await userFactory();
+    const loginUser = {
+      email: registerUser.email,
+      password: registerUser.password
+    };
+
+    const registerResponse = await supertest(app).post('/sign-up').send(registerUser);
+    const loginResponse = await supertest(app).post('/sign-in').send(loginUser);
+
+    const testsTeacher = await supertest(app).get('/tests-teacher').set('Authorization', `Bearer ${loginResponse.body.token}`);
+
+    expect(registerResponse.status).toBe(201);
+    expect(loginResponse.status).toBe(200);
+
+    expect(testsTeacher.status).toBe(200);
+    expect(testsTeacher.body[0].categories).toBeInstanceOf(Array);
+  });
+});
